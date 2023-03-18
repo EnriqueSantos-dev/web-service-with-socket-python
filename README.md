@@ -48,17 +48,18 @@ Error:
   id_operation: "get_users" -> Lista todos os usuários.
 
   Request: { "id_operation": "get_users", "payload": {} }
+  
   Response: {
-      "payload": [
-        {
-          "id": int,
-          "name": str,
-          "email": str,
-          "created_at": str,
-        }
-      ],
-      "code": 200
-    }
+    "payload": [
+      {
+        "id": int,
+        "name": str,
+        "email": str,
+        "created_at": str,
+      }
+    ],
+    "code": 200
+  }
 
   Response: {
     "error": 404  | 500,
@@ -72,18 +73,21 @@ Error:
   id_operation: "get_user" -> Busca um usuário pelo id.
 
   Request: { "id_operation": "get_user", "payload": { "user_id": int } }
+  
   Response: {
-      "payload": {
-        "id": int,
-        "name": str,
-        "email": str,
-        "created_at": str,
-      },
-      "code": 200
-    } | {
-      "error": 404  | 500,
-      "error_message": "User Not Found" | "Internal Server Error"
-    }
+    "payload": {
+      "id": int,
+      "name": str,
+      "email": str,
+      "created_at": str,
+    },
+    "code": 200
+  }
+    
+  Response: {
+    "error": 404  | 500,
+    "error_message": "User Not Found" | "Internal Server Error"
+  }
 ```
 
 ### Deletar um usuário pelo id:
@@ -92,13 +96,16 @@ Error:
   id_operation: "delete_user" -> Deleta um usuário pelo id.
 
   Request: { "id_operation": "delete_user", "payload": { "user_id": int } }
+  
   Response: {
       "payload": {},
       "code": 200
-    } | {
-      "error": 404  | 500,
-      "error_message": "User Not Found" | "Internal Server Error"
-    }
+  }
+    
+  Response: {
+    "error": 404  | 500,
+    "error_message": "User Not Found" | "Internal Server Error"
+  }
 ```
 
 ### Criar um usuário:
