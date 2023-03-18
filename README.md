@@ -4,7 +4,7 @@
 
 ### Request:
 
-A requisição é feita em formato JSON, e deve conter dois campos: **id_operation**: é a operação que está sendo executada, **data**: um objeto que contém o payload da requisição, esse objeto pode se modificar de acordo com a operação.
+A requisição é feita em formato JSON, e deve conter dois campos: **id_operation**: é a operação que está sendo executada, **payload**: um objeto que contém o payload da requisição, esse objeto pode se modificar de acordo com a operação.
 
 ```python
   { "id_operation":  str,  "payload": obj }
@@ -12,7 +12,7 @@ A requisição é feita em formato JSON, e deve conter dois campos: **id_operati
 
 ### Response:
 
-A resposta pode ser de dois tipos: **data** ou **error**.
+A resposta pode ser de dois tipos: com **data** ou com **error**.
 
 Data:
 
