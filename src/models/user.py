@@ -3,8 +3,11 @@ from typing import Optional
 
 
 class User:
-    def __init__(self, name: str, email: str, age: int, id: Optional[str] = str(uuid4())):
-        self.id = id
+    def __init__(self, name: str, email: str, age: int, id: Optional[str] = None):
+        if not id:
+            self.id = str(uuid4())
+        else:
+            self.id = id
         self.name = name
         self.email = email
         self.age = age
