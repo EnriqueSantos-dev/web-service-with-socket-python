@@ -7,6 +7,7 @@ from utils.responses import *
 
 PORT = env['server_port']
 HOST = env['server_host']
+BUFFER_SIZE = env['buffer_size']
 
 operations_allowed = ['get_users', 'create_user',
                       'update_user', 'delete_user', 'get_user', 'close_connection']
@@ -14,11 +15,14 @@ operations_allowed = ['get_users', 'create_user',
 
 class Server:
     def __init__(self, initial_socket) -> None:
+        self.buffer_size = BUFFER_SIZE
         self.socket = initial_socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def decode_data(self, data):
         try:
             raw_json = data.decode()
+            if not raw_json:
+                return None
             dict = json.loads(raw_json)
             return dict
         except Exception as e:
@@ -26,7 +30,7 @@ class Server:
 
     def on_connect(self, conn, address: str) -> None:
         while True:
-            binary_data = conn.recv(1024)
+            binary_data = conn.recv(self.buffer_size)
             message = self.decode_data(binary_data)
 
             if not message:
