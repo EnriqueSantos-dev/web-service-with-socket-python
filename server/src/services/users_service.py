@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict
 from models.user import User
 from database.db import database
 from utils.responses import *
@@ -11,7 +11,7 @@ def get_users():
 def get_user(user_id: str):
     user = database[user_id]
 
-    if (user is None):
+    if user is None:
         return build_error_response(404, "User not found")
 
     return build_success_response(user.__dict__(), 200)
@@ -30,21 +30,17 @@ def update_user(user_id: str, data: Dict):
     if (user_id not in database.keys()):
         return build_error_response(404, "User not found")
 
-    if (data['name'] is None or data['email'] is None or data['age'] is None):
-        return build_error_response(400, "Bad Request")
-
-    new_user = User(name=data['name'],
-                    email=data['email'], age=data['age'], id=user_id)
+    new_user = User(name=database[user_id].name if not data['name'] else data['name'],
+                    email=database[user_id].email if not data['email'] else data['email'],
+                    age=database[user_id].age if not data["age"] else data['age'], id=user_id)
 
     database[user_id] = new_user
-
     return build_success_response(new_user.__dict__(), 200)
 
 
 def delete_user(user_id: str):
-    user_exist = database[user_id]
-
-    if (user_exist is None):
+    if user_id not in database.keys():
         return build_error_response(404, "User not found")
 
-    return build_success_response(database.pop(user_id), 200)
+    del database[user_id]
+    return build_success_response(None, 204)
