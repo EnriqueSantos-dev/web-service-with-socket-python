@@ -5,7 +5,7 @@ Web Service With Python and Sockets
 O sistema trata-se de um web service feito com o módulo **socket** do **python**. Se tratadando de persistência de dados o sistema utiliza banco de dados em memória para armazenar os dados dos usuários, o seu comportamento é baseado em um CRUD de usuários, onde é possível criar, listar, atualizar e deletar usuários, com funcionamento semelhante a uma **Api Rest** e com o protocolo de **Resquest** e **Response** semelhante ao **HTTP**. Ademais, para a comunicação entre o cliente e o servidor as mensagens são enviadas em formato **JSON** e recebidas como **JSON** também.
 
 ## Docker images
-Esse projeto possui duas imagens docker, uma para o servidor e outra para o cliente, para que o projeto possa ser executado é necessário ter o docker instalado na máquina. Nos passos asseguir.
+Esse projeto possui duas imagens docker, uma para o servidor e outra para o cliente, para que o projeto possa ser executado é necessário ter o docker instalado na máquina.
 
 ### Imagem para o servidor
 ```docker
