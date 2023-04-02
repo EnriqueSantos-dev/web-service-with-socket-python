@@ -1,161 +1,28 @@
-# web-service-with-socket-python
+Web Service With Python and Sockets
+---
 
-## Interfaces para request e response:
+## Descrição do sistema:
+O sistema trata-se de um web service feito com o módulo **socket** do **python**. Se tratadando de persistência de dados o sistema utiliza banco de dados em memória para armazenar os dados dos usuários, o seu comportamento é baseado em um CRUD de usuários, onde é possível criar, listar, atualizar e deletar usuários, com funcionamento semelhante a uma **Api Rest** e com o protocolo de **Resquest** e **Response** semelhante ao **HTTP**. Ademais, para a comunicação entre o cliente e o servidor as mensagens são enviadas em formato **JSON** e recebidas como **JSON** também.
 
-### Request:
+## Docker images
+Esse projeto possui duas imagens docker, uma para o servidor e outra para o cliente, para que o projeto possa ser executado é necessário ter o docker instalado na máquina.
 
-A requisição é feita em formato JSON, e deve conter dois campos: **id_operation**: é a operação que está sendo executada, **payload**: um objeto que contém o payload da requisição, esse objeto pode se modificar de acordo com a operação.
-
-```python
-  { "id_operation":  str,  "payload": obj }
+### Imagem para o servidor
+```docker
+docker pull dockerhubenrique/dockerhub:server_socket
 ```
 
-### Response:
-
-A resposta pode ser de dois tipos: com **data** ou com **error**.
-
-Data:
-
-```python
-  { "payload": obj, "code": int }
+### Imagem para o client
+```docker
+docker pull dockerhubenrique/dockerhub:client_socket
 ```
 
-Error:
-
-```python
-  { "error": int, "error_message": str }
+## Como rodar o projeto
+```docker
+docker compose up --remove-orphans
 ```
 
-### Errors do sistema
-
-**Error usuário não encontrado**: esse error ocorre quando não é encontrado um usuário que o client está buscando no sistema.
-
-```python
-  { "error": 404, "error_message": "User Not Found" }
-```
-
-**Internal Server Error**: esse error ocorre quando acontece algum error interno no servidor, quando uma chamada ao banco retorna algum erro nos mandamos erro para o client.
-
-```python
-  { "error": 500, "error_message": "Internal Server Error" }
-```
-
-## Operações do sistema:
-
-### Listar usuários:
-
-```python
-  id_operation: "get_users" -> Lista todos os usuários.
-
-  Request: { "id_operation": "get_users", "payload": {} }
-  
-  Response: {
-    "payload": [
-      {
-        "id": int,
-        "name": str,
-        "email": str,
-        "created_at": str,
-      }
-    ],
-    "code": 200
-  }
-
-  Response: {
-    "error": 404  | 500,
-    "error_message": "User Not Found" | "Internal Server Error"
-  }
-```
-
-### Buscar um único usuário:
-
-```python
-  id_operation: "get_user" -> Busca um usuário pelo id.
-
-  Request: { "id_operation": "get_user", "payload": { "user_id": int } }
-  
-  Response: {
-    "payload": {
-      "id": int,
-      "name": str,
-      "email": str,
-      "created_at": str,
-    },
-    "code": 200
-  }
-    
-  Response: {
-    "error": 404  | 500,
-    "error_message": "User Not Found" | "Internal Server Error"
-  }
-```
-
-### Deletar um usuário pelo id:
-
-```python
-  id_operation: "delete_user" -> Deleta um usuário pelo id.
-
-  Request: { "id_operation": "delete_user", "payload": { "user_id": int } }
-  
-  Response: {
-      "payload": {},
-      "code": 200
-  }
-    
-  Response: {
-    "error": 404  | 500,
-    "error_message": "User Not Found" | "Internal Server Error"
-  }
-```
-
-### Criar um usuário:
-
-```python
-  id_operation: "create_user" -> Cria um usuário.
-
-  Request: {
-    "id_operation": "create_user",
-    "payload": { "name": str, "email": str }
-  }
-
-  Response: {
-    "payload": {
-      "id": int,
-      "name": str,
-      "email": str,
-      "created_at": str,
-    },
-    "code": 201
-  }
-
-  Response: {
-    "error": 404  | 500,
-    "error_message": "User Not Found" | "Internal Server Error"
-  }
-```
-
-### Atualizar um usuário:
-
-```python
-  id_operation: "update_user" -> Atualiza um usuário.
-
-  Request: {
-    "id_operation": "update_user",
-    "payload": { "user_id": int, "name": str, "email": str }
-  }
-
-  Response: {
-    "payload": {
-      "id": int,
-      "name": str,
-      "email": str,
-      "created_at": str,
-    },
-    "code": 200
-  }
-
-  Response: {
-    "error": 404  | 500,
-    "error_message": "User Not Found" | "Internal Server Error"
-  }
+A imagem do cliente necessita de interatividade no terminal para funcionar corretamente, por isso é necessário rodar o comando abaixo para que o cliente possa ser executado corretamente.
+```docker
+docker exec -it client python src/app.py
 ```
