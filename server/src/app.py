@@ -25,7 +25,8 @@ class Server:
         self.socket.bind((self.host, self.port))
         self.socket.listen()
 
-        print(f'Server listener on {self.host}:{self.port}')
+        ip_address, port = self.socket.getsockname()
+        print(f'Server listener on {ip_address}:{port}')
 
         while True:
             conn, addr = self.socket.accept()
@@ -44,7 +45,7 @@ class Server:
 
     def handle_client(self, client, addr):
         host_client, port_client = addr
-        print(f"New connection from '{host_client}:{port_client}'")
+        print(f"Receive connection from '{host_client}:{port_client}'")
 
         while True:
             try:
