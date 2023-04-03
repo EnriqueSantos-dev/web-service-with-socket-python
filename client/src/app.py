@@ -21,7 +21,7 @@ delete_user_raw = {'id_operation': 'delete_user', 'payload': {'user_id': None}}
 
 
 class Client:
-    def __init__(self, host: str = "localhost", port: int = 8080, buffer_size: int = 2048) -> None:
+    def __init__(self, host: str, port: int, buffer_size: int) -> None:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer_size = buffer_size
         self.host = host
@@ -41,7 +41,8 @@ class Client:
 
     def close_connection(self):
         self.socket.sendall(json.dumps(close_connection_data).encode())
-        print(f"{json.dumps(json.loads(self.socket.recv(self.buffer_size).decode()), indent=2)}")
+        print(
+            f"{json.dumps(json.loads(self.socket.recv(self.buffer_size).decode()), indent=2)}")
 
 
 if __name__ == '__main__':
@@ -66,22 +67,31 @@ if __name__ == '__main__':
                     client.close_connection()
                     break
                 case 1:
-                    res = input('Deseja criar o usuários com valores padrões? (y/n): ').strip().lower() == 'y'
+                    res = input(
+                        'Deseja criar o usuários com valores padrões? (y/n): ').strip().lower() == 'y'
 
                     if res:
-                        print(json.dumps(client.send_data(create_user_raw), indent=2))
+                        print(json.dumps(client.send_data(
+                            create_user_raw), indent=2))
                     else:
-                        create_user_raw['payload']['name'] = input('Digite o nome: ').strip()
-                        create_user_raw['payload']['email'] = input('Digite o email: ').strip()
-                        create_user_raw['payload']['age'] = int(input('Digite a idade: ').strip())
-                        print(json.dumps(client.send_data(create_user_raw), indent=2))
+                        create_user_raw['payload']['name'] = input(
+                            'Digite o nome: ').strip()
+                        create_user_raw['payload']['email'] = input(
+                            'Digite o email: ').strip()
+                        create_user_raw['payload']['age'] = int(
+                            input('Digite a idade: ').strip())
+                        print(json.dumps(client.send_data(
+                            create_user_raw), indent=2))
                 case 2:
                     input('Deseja atualiar o nome do usuário? (y/n): ').strip().lower() == 'y' and \
-                        update_user_raw['payload']['data'].update({'name': input('Digite o nome: ').strip()})
+                        update_user_raw['payload']['data'].update(
+                            {'name': input('Digite o nome: ').strip()})
                     input('Deseja atualiar o email do usuário? (y/n): ').strip().lower() == 'y' and \
-                        update_user_raw['payload']['data'].update({'email': input('Digite o email: ').strip()})
+                        update_user_raw['payload']['data'].update(
+                            {'email': input('Digite o email: ').strip()})
                     input('Deseja atualiar a idade do usuário? (y/n): ').strip().lower() == 'y' and \
-                        update_user_raw['payload']['data'].update({'age': int(input('Digite a idade: ').strip())})
+                        update_user_raw['payload']['data'].update(
+                            {'age': int(input('Digite a idade: ').strip())})
 
                     user_id = input('Digite o id do usuário: ').strip()
                     update_user_raw['payload']['user_id'] = user_id
@@ -100,7 +110,8 @@ if __name__ == '__main__':
                 case 7:
                     print(json.dumps(client.send_data({}), indent=2))
                 case 8:
-                    print(json.dumps(client.send_data({'id_operation': 'not_found'}), indent=2))
+                    print(json.dumps(client.send_data(
+                        {'id_operation': 'not_found'}), indent=2))
                 case _:
                     print('Operação não encontrada!')
         except KeyboardInterrupt:
