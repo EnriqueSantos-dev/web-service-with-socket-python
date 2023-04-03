@@ -1,5 +1,6 @@
 import json
 import socket
+import time
 from config.env import env
 
 PORT = env['server_port']
@@ -29,7 +30,11 @@ class Client:
 
     def connect(self):
         self.socket.connect((self.host, self.port))
-        return self.socket
+        ip_address, port = self.socket.getsockname()
+        remote_ip, remote_port = self.socket.getpeername()
+
+        print(f'Client address {ip_address}:{port}')
+        print(f'Server address {remote_ip}:{remote_port}\n')
 
     def send_data(self, data):
         try:
@@ -40,9 +45,17 @@ class Client:
             print('Error on send data')
 
     def close_connection(self):
-        self.socket.sendall(json.dumps(close_connection_data).encode())
-        print(
-            f"{json.dumps(json.loads(self.socket.recv(self.buffer_size).decode()), indent=2)}")
+        try:
+            self.socket.sendall(json.dumps(close_connection_data).encode())
+            print(
+                f"{json.dumps(json.loads(self.socket.recv(self.buffer_size).decode()), indent=2)}")
+            print('\nClient Closing connection...', end='\n'*2)
+            time.sleep(0.150)  # 200ms
+            self.socket.close()
+            exit(0)
+        except Exception as e:
+            print(e)
+            print('Error on close connection')
 
 
 if __name__ == '__main__':
@@ -115,6 +128,5 @@ if __name__ == '__main__':
                 case _:
                     print('Operação não encontrada!')
         except KeyboardInterrupt:
-            print('\nCliente desconectando devido a interrupção do usuário!')
+            print('\nCliente desconectando devido a interrupção do usuário!', end="\n"*2)
             client.close_connection()
-            exit(1)
