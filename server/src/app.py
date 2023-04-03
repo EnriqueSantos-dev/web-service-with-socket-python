@@ -13,10 +13,10 @@ operations_allowed = ['get_users', 'create_user',
 
 
 class Server:
-    def __init__(self, host: str, port: int) -> None:
+    def __init__(self, host: str, port: int, buffer_size: int) -> None:
         self.host = host
         self.port = port
-        self.buffer_size = BUFFER_SIZE
+        self.buffer_size = buffer_size
         self.socket = None
 
     def start(self):
@@ -56,8 +56,10 @@ class Server:
 
                 match message['id_operation']:
                     case 'close_connection':
-                        print(f"Connection closed from '{host_client}:{port_client}'")
-                        client.sendall(build_success_response({'message': 'Connection closed'}, 200))
+                        print(
+                            f"Connection closed from '{host_client}:{port_client}'")
+                        client.sendall(build_success_response(
+                            {'message': 'Connection closed'}, 200))
                         client.close()
                         break
                     case 'get_user':
@@ -69,8 +71,10 @@ class Server:
                     case 'update_user':
                         payload = message['payload']
                         if not payload:
-                            client.sendall(build_error_response(400, 'Bad Request'))
-                        data = users_service.update_user(payload.get('user_id'), payload['data'])
+                            client.sendall(
+                                build_error_response(400, 'Bad Request'))
+                        data = users_service.update_user(
+                            payload.get('user_id'), payload['data'])
                         client.sendall(data)
                     case 'create_user':
                         payload = message['payload']
@@ -83,9 +87,10 @@ class Server:
                     case _:
                         client.sendall(build_error_response(404, 'Not Found'))
             except Exception as e:
-                client.sendall(build_error_response(500, 'Internal Server Error'))
+                client.sendall(build_error_response(
+                    500, 'Internal Server Error'))
 
 
 if __name__ == '__main__':
-    server = Server(HOST, PORT)
+    server = Server(HOST, PORT, BUFFER_SIZE)
     server.start()
