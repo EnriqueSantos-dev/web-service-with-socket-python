@@ -9,12 +9,10 @@ def get_users():
 
 
 def get_user(user_id: str):
-    user = database[user_id]
-
-    if user is None:
+    if user_id not in database.keys():
         return build_error_response(404, "User not found")
 
-    return build_success_response(user.__dict__(), 200)
+    return build_success_response(database[user_id].__dict__(), 200)
 
 
 def create_user(data: Dict):
