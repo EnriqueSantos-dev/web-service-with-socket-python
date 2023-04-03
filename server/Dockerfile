@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt
 
 ENV PYTHONPATH /usr/app
 
-EXPOSE ${SERVER_PORT}
+EXPOSE 8080
 
 CMD [ "python", "src/app.py" ]
 
