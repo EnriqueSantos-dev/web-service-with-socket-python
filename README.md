@@ -34,6 +34,14 @@ docker exec -it client python src/app.py
 
 ## Como rodar o projeto sem o docker compose e conectar os containers manualmente
 
+---
+
+### Criar uma network para conectar os containers
+
+```docker
+docker network create app-socket
+```
+
 ### Servidor
 
 ```docker
@@ -49,8 +57,8 @@ docker exec -it client python src/app.py
 ### Cliente
 
 ```docker
-docker run --network=app-socket \
-    --rm \
+docker run --rm \
+    --network=app-socket \
     --name client \
     -d \
     -e SERVER_HOST=server \
