@@ -1,4 +1,4 @@
-## Web Service With Python and Sockets
+## Web service com Python e Sockets
 
 ## Descrição do sistema:
 
